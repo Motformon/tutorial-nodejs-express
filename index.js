@@ -15,6 +15,10 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
 
+//Сделаем папку public публичной
+app.use(express.static('public'));
+
+
 //Запрос на главную директорию
 app.get('/', (req, res) => {
 	//Установка статуса, но статус 200 идет по умолчанию в express так что его ставить не обязательно
