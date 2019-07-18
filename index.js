@@ -26,12 +26,25 @@ app.get('/', (req, res) => {
 	//Отправка файла index.html
 		// res.sendFile(path.join(__dirname, 'views', 'index.html'));
 	//Render index with Handlebars
-	res.render('index');
+	res.render('index', {
+		title: 'Главная страница',
+		isHome: true
+	});
 });
 
-app.get('/about', (req, res) => {
+app.get('/add', (req, res) => {
 	// res.sendFile(path.join(__dirname, 'views', 'about.html'));
-	res.render('about');
+	res.render('add', {
+		title: 'Добавить курс',
+		isAdd: true
+	});
+});
+
+app.get('/courses', (req, res) => {
+	res.render('courses', {
+		title: 'Курсы',
+		isCourses: true
+	});
 })
 
 const PORT = process.env.PORT || 3000;
