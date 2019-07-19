@@ -21,6 +21,9 @@ app.set('views', 'views');
 //Сделаем папку public публичной
 app.use(express.static('public'));
 
+//Обработка данный(например post запроса)
+app.use(express.urlencoded({extended: true}));
+
 //Вызов роутеров
 app.use('/', homeRoutes);
 app.use('/add', addRoutes);

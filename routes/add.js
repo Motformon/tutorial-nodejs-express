@@ -10,5 +10,9 @@ router.get('/', (req, res) => {
 	});
 });
 
+router.post('/', (req, res) => {
+	res.redirect('/courses');
+});
+
 
 module.exports = router;
