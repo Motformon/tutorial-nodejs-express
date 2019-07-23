@@ -27,7 +27,7 @@ class Cart {
 		cart.price += +course.price; 
 
 		return new Promise((resolve, reject) => {
-			fs.readFile(p, JSON.stringify(cart), (err, content) => {
+			fs.writeFile(p, JSON.stringify(cart), (err, content) => {
 				if (err) {
 					reject(err)
 				} else {

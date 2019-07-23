@@ -1,4 +1,1 @@
-{
-	"courses": [],
-	"price": 0
-}
+{"courses":[{"title":"vue js","price":"15000","img":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1200px-Vue.js_Logo_2.svg.png","id":"842d6a17-3483-44ce-92f7-4a995e1d68b1","count":2},{"title":"test","price":"666","img":"test.img","id":"111fca52-7d00-48dc-ba5e-bc0a406671b6","count":1}],"price":30666}
