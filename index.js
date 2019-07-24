@@ -20,7 +20,7 @@ app.set('view engine', 'hbs');
 app.set('views', 'views');
 
 //Сделаем папку public публичной
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Обработка данный(например post запроса)
 app.use(express.urlencoded({extended: true}));

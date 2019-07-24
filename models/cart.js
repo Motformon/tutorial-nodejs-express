@@ -27,11 +27,39 @@ class Cart {
 		cart.price += +course.price; 
 
 		return new Promise((resolve, reject) => {
-			fs.writeFile(p, JSON.stringify(cart), (err, content) => {
+			fs.writeFile(p, JSON.stringify(cart), (err) => {
 				if (err) {
 					reject(err)
 				} else {
 					resolve()
+				}
+			});
+		});
+	}
+
+	static async remove() {
+		const cart = await Cart.fetch;
+
+		const idx = cart.courses.findIndex(c => c.id === id);
+		const course = cart.courses[idx];
+
+		if (course.count === 1) {
+			//Удалить курс
+			cart.courses = cart.courses.filter(c => c.id !== id);
+		} else {
+			//Изменить количество
+			cart.courses[idx].count--;
+
+		}
+
+		cart.price -= course.price;
+
+		return new Promise((resolve, reject) => {
+			fs.writeFile(p, JSON.stringify(cart), (err) => {
+				if (err) {
+					reject(err)
+				} else {
+					resolve(cart)
 				}
 			});
 		});
