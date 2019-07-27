@@ -5,22 +5,37 @@ const toCurrency = price => {
   }).format(price)
 }
 
+const toDate = date => {
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  }).format(new Date(date))
+}
+
 document.querySelectorAll('.price').forEach(node => {
   node.textContent = toCurrency(node.textContent)
 })
 
-const $cart = document.querySelector('#cart')
-if ($cart) {
-  $cart.addEventListener('click', event => {
+document.querySelectorAll('.date').forEach(node => {
+  node.textContent = toDate(node.textContent)
+})
+
+const $card = document.querySelector('#card')
+if ($card) {
+  $card.addEventListener('click', event => {
     if (event.target.classList.contains('js-remove')) {
       const id = event.target.dataset.id
       
-      fetch('/cart/remove/' + id, {
+      fetch('/card/remove/' + id, {
         method: 'delete'
       }).then(res => res.json())
-        .then(cart => {
-          if (cart.courses.length) {
-            const html = cart.courses.map(c => {
+        .then(card => {
+          if (card.courses.length) {
+            const html = card.courses.map(c => {
               return `
               <tr>
                 <td>${c.title}</td>
@@ -31,10 +46,10 @@ if ($cart) {
               </tr>
               `
             }).join('')
-            $cart.querySelector('tbody').innerHTML = html
-            $cart.querySelector('.price').textContent = toCurrency(cart.price)
+            $card.querySelector('tbody').innerHTML = html
+            $card.querySelector('.price').textContent = toCurrency(card.price)
           } else {
-            $cart.innerHTML = '<p>Корзина пуста</p>'
+            $card.innerHTML = '<p>Корзина пуста</p>'
           }
         })
     }

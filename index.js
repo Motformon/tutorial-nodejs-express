@@ -1,40 +1,71 @@
-const express = require('express');
-const path = require('path');
-const exphbs = require('express-handlebars');
-const homeRoutes = require('./routes/home');
-const cartRoutes = require('./routes/cart');
-const addRoutes = require('./routes/add');
-const coursesRoutes = require('./routes/courses');
+const express = require('express')
+const path = require('path')
+const mongoose = require('mongoose')
+const exphbs = require('express-handlebars')
+const homeRoutes = require('./routes/home')
+const cardRoutes = require('./routes/card')
+const addRoutes = require('./routes/add')
+const ordersRoutes = require('./routes/orders')
+const coursesRoutes = require('./routes/courses')
+const User = require('./models/user')
 
-const app = express();
+const app = express()
 
-//Задание параметров для Handlebars
 const hbs = exphbs.create({
-	defaultLayout: 'main',
-	extname: 'hbs'
-});
+  defaultLayout: 'main',
+  extname: 'hbs'
+})
 
-//Регистрация Handlebars
-app.engine('hbs', hbs.engine);
-app.set('view engine', 'hbs');
-app.set('views', 'views');
+app.engine('hbs', hbs.engine)
+app.set('view engine', 'hbs')
+app.set('views', 'views')
 
-//Сделаем папку public публичной
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(async (req, res, next) => {
+  try {
+    const user = await User.findById('5cc1d29dcedab01481e03660')
+    req.user = user
+    next()
+  } catch (e) {
+    console.log(e)
+  }
+})
 
-//Обработка данный(например post запроса)
-app.use(express.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.urlencoded({extended: true}))
 
-//Вызов роутеров
-app.use('/', homeRoutes);
-app.use('/add', addRoutes);
-app.use('/courses', coursesRoutes);
-app.use('/cart', cartRoutes);
+app.use('/', homeRoutes)
+app.use('/add', addRoutes)
+app.use('/courses', coursesRoutes)
+app.use('/card', cardRoutes)
+app.use('/orders', ordersRoutes)
+
+const PORT = process.env.PORT || 3000
+
+async function start() {
+  try {
+		
+    const url = `mongodb+srv://Motformon:pVgEwSv39wXAPc8K@cluster0-erm5b.mongodb.net/test?retryWrites=true&w=majority`
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useFindAndModify: false
+    })
+    const candidate = await User.findOne()
+    if (!candidate) {
+      const user = new User({
+        email: 'motformon@gmail.com',
+        name: 'Mikhail',
+        cart: {items: []}
+      })
+      await user.save()
+    }
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`)
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+start()
 
 
-const PORT = process.env.PORT || 3000;
-
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
